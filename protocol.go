@@ -73,11 +73,15 @@ func NewClient(endpoint, certificate, key string) (*ApnsConn, error) {
 			Certificates: []tls.Certificate{cert}},
 		endpoint:         endpoint,
 		ReadTimeout:      150 * time.Millisecond,
-		MAX_PAYLOAD_SIZE: 256,
+		MAX_PAYLOAD_SIZE: 4096,
 		connected:        false,
 	}
 
 	return apnsConn, nil
+}
+
+func (client *ApnsConn) Shutdown() (err error) {
+	return client.shutdown()
 }
 
 func (client *ApnsConn) shutdown() (err error) {
